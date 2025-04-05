@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='pushkar',
     maintainer_email='pushkarkadam17@outlook.com',
-    description='TODO: Package description',
+    description='UR10 assembly package',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
