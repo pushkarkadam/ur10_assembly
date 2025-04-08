@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<robot name="ur10_assembly" xmlns:xacro="https://ros.org/wiki/xacro">
+    <!-- Include UR10 robot -->
+    <xacro:include filename="$(find Universal_Robots_ROS2_Description)/urdf/ur.urdf.xacro"/>
+    
+    <!-- Include Robotiq gripper -->
+    <xacro:include filename="$(find ros2_robotiq_gripper)/robotiq_description/urdf/robotiq_2f_85_gripper.urdf.xacro"/>
+
+    <!-- Include cylinder link -->
+    <xacro:include filename="(find ur10_assembly)/urdf/cylinder.xacro"/>
+
+    <!-- World link -->
+    <link name="world"/>
+
+    <!-- UR10 robot -->
+    <xacro:ur10 name="ur10" parent="world"/>
+
+    <!-- Robotiq gripper -->
+    <xacro:robotiq_gripper prefix="gripper_">
+        <origin xyz="0 0 0.1" rpy="0 0 0"/>
+        <parent_link>tool0</parent_link>
+    </xacro:robotiq_gripper>
+
+    <!-- Attach cylinder to link -->
+    <joint name="gripper_to_cylinder" type="fixed">
+        <parent link="gripper_robotiq_85_finger_tip_link"/>
+        <child link="cylinder"/>
+        <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    </joint>
+</robot>
