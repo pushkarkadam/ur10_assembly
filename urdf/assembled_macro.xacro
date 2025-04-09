@@ -7,6 +7,10 @@
     <xacro:property name="width" value="0.5"/>
     <xacro:property name="height" value="0.5"/>
 
+    <material name="blue">
+        <color rgba="0 0 0.8 0.5"/>
+    </material>
+
     <xacro:macro name="assembled_robot" params="
         parent
         *origin
@@ -19,9 +23,9 @@
 
         <!--  this joint fixes the table to the world link given as a parameter -->
         <joint name="table_base_joint" type="fixed">
-            <xacro:insert_block name="origin"/>
             <parent link="${parent}"/>
             <child link="table"/>
+            <origin xyz="0 0 ${height}" rpy="0 0 0"/>
         </joint>
 
         <link name="table">
@@ -29,13 +33,14 @@
                 <geometry>
                     <box size="${length} ${width} ${height}"/>
                 </geometry>
-                <origin rpy="0 0 0" xyz="0 0 -${height}"/>
+                <origin rpy="0 0 0" xyz="0 0 -${height/2}"/>
+                <material name="blue"/>
             </visual>
             <collision>
                 <geometry>
                     <box size="${length} ${width} ${height}"/>
                 </geometry>
-                <origin rpy="0 0 0" xyz="0 0 -${height}"/>
+                <origin rpy="0 0 0" xyz="0 0 -${height/2}"/>
             </collision>
         </link>
 
