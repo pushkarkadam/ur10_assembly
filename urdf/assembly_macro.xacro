@@ -29,6 +29,6 @@
             </geometry>
             <origin xyz="0 0 ${length/2}"/>
         </collision>
-        <xacro:default_inertial mass="0.5"/>
+    <xacro:default_inertial mass="0.5"/>
     </link>
 </robot>

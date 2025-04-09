@@ -1,30 +1,24 @@
 <?xml version="1.0"?>
 <robot name="ur10_assembly" xmlns:xacro="https://ros.org/wiki/xacro">
     <!-- Include UR10 robot -->
-    <xacro:include filename="$(find Universal_Robots_ROS2_Description)/urdf/ur.urdf.xacro"/>
+    <xacro:include filename="$(find ur10_assembly)/urdf/assembled_macro.xacro"/>
     
-    <!-- Include Robotiq gripper -->
-    <xacro:include filename="$(find ros2_robotiq_gripper)/robotiq_description/urdf/robotiq_2f_85_gripper.urdf.xacro"/>
+    <xacro:arg name="ur_type" default="ur10"/>
+    <xacro:arg name="joint_limits_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+    <xacro:arg name="kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+    <xacro:arg name="physical_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+    <xacro:arg name="visual_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
 
-    <!-- Include cylinder link -->
-    <xacro:include filename="(find ur10_assembly)/urdf/cylinder.xacro"/>
-
-    <!-- World link -->
     <link name="world"/>
-
-    <!-- UR10 robot -->
-    <xacro:ur10 name="ur10" parent="world"/>
-
-    <!-- Robotiq gripper -->
-    <xacro:robotiq_gripper prefix="gripper_">
-        <origin xyz="0 0 0.1" rpy="0 0 0"/>
-        <parent_link>tool0</parent_link>
-    </xacro:robotiq_gripper>
-
-    <!-- Attach cylinder to link -->
-    <joint name="gripper_to_cylinder" type="fixed">
-        <parent link="gripper_robotiq_85_finger_tip_link"/>
-        <child link="cylinder"/>
-        <origin xyz="0 0 0.05" rpy="0 0 0"/>
-    </joint>
+    <!-- This will create the scene where the robot is located in -->
+    <xacro:assembled_robot
+        parent="world"
+        ur_type="$(arg ur_type)"
+        joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+        kinematics_parameters_file="$(arg kinematics_parameters_file)"
+        physical_parameters_file="$(arg physical_parameters_file)"
+        visual_parameters_file="$(arg visual_parameters_file)"
+        >
+            <origin xyz="0 0 1" rpy="0 0 0"/>
+    </xacro:assembled_robot>
 </robot>
