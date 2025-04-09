@@ -29,13 +29,13 @@
                 <geometry>
                     <box size="${length} ${width} ${height}"/>
                 </geometry>
-                <origin rpy="0 0 0" xyz="0 0 ${height / 2}"/>
+                <origin rpy="0 0 0" xyz="0 0 -${height}"/>
             </visual>
             <collision>
                 <geometry>
                     <box size="${length} ${width} ${height}"/>
                 </geometry>
-                <origin rpy="0 0 0" xyz="0 0 ${height / 2}"/>
+                <origin rpy="0 0 0" xyz="0 0 -${height}"/>
             </collision>
         </link>
 
