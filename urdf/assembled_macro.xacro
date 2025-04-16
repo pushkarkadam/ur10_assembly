@@ -3,11 +3,11 @@
 
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
 
-    <xacro:property name="length" value="0.5"/>
-    <xacro:property name="width" value="0.5"/>
-    <xacro:property name="height" value="0.5"/>
+    <xacro:property name="length" value="0.60"/>
+    <xacro:property name="width" value="0.75"/>
+    <xacro:property name="height" value="0.90"/>
 
-    <material name="blue">
+    <material name="blue_table">
         <color rgba="0 0 0.8 0.5"/>
     </material>
 
@@ -25,7 +25,7 @@
         <joint name="table_base_joint" type="fixed">
             <parent link="${parent}"/>
             <child link="table"/>
-            <origin xyz="0 0 ${height}" rpy="0 0 0"/>
+            <origin xyz="0 0 ${height}" rpy="0 0 -${pi/4}"/>
         </joint>
 
         <link name="table">
@@ -33,14 +33,14 @@
                 <geometry>
                     <box size="${length} ${width} ${height}"/>
                 </geometry>
-                <origin rpy="0 0 0" xyz="0 0 -${height/2}"/>
-                <material name="blue"/>
+                <origin xyz="0 0 -${height/2}" rpy="0 0 ${pi/4}" />
+                <material name="blue_table"/>
             </visual>
             <collision>
                 <geometry>
                     <box size="${length} ${width} ${height}"/>
                 </geometry>
-                <origin rpy="0 0 0" xyz="0 0 -${height/2}"/>
+                <origin xyz="0 0 -${height/2}" rpy="0 0 ${pi/4}" />
             </collision>
         </link>
 
@@ -49,20 +49,20 @@
         <joint name="base_to_robot_mount" type="fixed">
             <parent link="table"/>
             <child link="robot_mount"/>
-            <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
         </joint>
 
         <!-- This will create the specific robot -->
         <xacro:ur_robot
             name="${ur_type}"
             tf_prefix="${ur_type}_"
-            parent="robot_mount"
+            parent="${parent}"
             joint_limits_parameters_file="${joint_limits_parameters_file}"
             kinematics_parameters_file="${kinematics_parameters_file}"
             physical_parameters_file="${physical_parameters_file}"
             visual_parameters_file="${visual_parameters_file}"
         >
-            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <origin xyz="0 0 ${height}" rpy="0 0 ${pi}"/>
         </xacro:ur_robot>
     </xacro:macro>
 
