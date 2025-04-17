@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro"/>
+
+    <xacro:property name="length" value="0.60"/>
+    <xacro:property name="width" value="0.75"/>
+    <xacro:property name="height" value="0.90"/>
+
+    <material name="blue_table">
+        <color rgba="0 0 0.8 1"/>
+    </material>
+
+    <xacro:macro name="assembled_robot" params="
+        parent
+        *origin
+        ur_type
+        joint_limits_parameters_file
+        kinematics_parameters_file
+        physical_parameters_file
+        visual_parameters_file
+        ">
+
+        <!--  this joint fixes the table to the world link given as a parameter -->
+        <joint name="table_base_joint" type="fixed">
+            <parent link="${parent}"/>
+            <child link="table"/>
+            <origin xyz="0 0 ${height}" rpy="0 0 -${pi/4}"/>
+        </joint>
+
+        <link name="table">
+            <visual>
+                <geometry>
+                    <box size="${length} ${width} ${height}"/>
+                </geometry>
+                <origin xyz="0 0 -${height/2}" rpy="0 0 ${pi/4}" />
+                <material name="blue_table"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <box size="${length} ${width} ${height}"/>
+                </geometry>
+                <origin xyz="0 0 -${height/2}" rpy="0 0 ${pi/4}" />
+            </collision>
+        </link>
+
+        <link name="robot_mount"/>
+
+        <joint name="base_to_robot_mount" type="fixed">
+            <parent link="table"/>
+            <child link="robot_mount"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </joint>
+
+        <!-- This will create the specific robot -->
+        <xacro:ur_robot
+            name="${ur_type}"
+            tf_prefix="${ur_type}_"
+            parent="${parent}"
+            joint_limits_parameters_file="${joint_limits_parameters_file}"
+            kinematics_parameters_file="${kinematics_parameters_file}"
+            physical_parameters_file="${physical_parameters_file}"
+            visual_parameters_file="${visual_parameters_file}"
+        >
+            <origin xyz="0 0 ${height}" rpy="0 0 ${pi}"/>
+        </xacro:ur_robot>
+
+        <!-- This will create gripper -->
+        <xacro:robotiq_gripper
+            name="RobotiqGripper"
+            prefix="${ur_type}_"
+            parent="${ur_type}_flange"
+        >
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+    </xacro:robotiq_gripper>
+
+    </xacro:macro>
+
+    
+
+</robot>
