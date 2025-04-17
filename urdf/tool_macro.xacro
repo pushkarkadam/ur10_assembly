@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot name="tool" xmlns:xacro="https://ros/org/wiki/xacro">
+    <xacro:macro name="tool" params="
+        name
+        prefix 
+        parent">
+
+        <xacro:property name="radius" value="0.01"/>
+        <xacro:property name="length" value="0.1"/>
+
+        <material name="red">
+            <color rgba="0.8 0 0 1"/>
+        </material>
+
+        <xacro:macro name="default_inertial" params="mass">
+            <inertial>
+                <mass value="${mass}"/>
+                <inertia ixx="1e-3" ixy="0.0" ixz="0.0" iyy="1e-3" iyz="0.0" izz="1e-3"/>
+            </inertial>
+        </xacro:macro>
+        <link name="${prefix}${name}">
+            <visual>
+                <geometry>
+                    <cylinder radius="${radius}" length="${length}"/>
+                </geometry>
+                <material name="red"/>
+                <origin xyz="0 0 ${length/2}" rpy="0 0 0"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder radius="${radius}" length="${length}"/>
+                </geometry>
+                <origin xyz="0 0 ${length/2}"/>
+            </collision>
+            <xacro:default_inertial mass="0.5"/>
+        </link>
+
+        <joint name="${prefix}${name}_to_gripper" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${prefix}${name}"/>
+            <origin xyz="0 0 0.09" rpy="0 0 0"/>
+        </joint>
+    </xacro:macro>
+</robot>
