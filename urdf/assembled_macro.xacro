@@ -2,13 +2,14 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+    <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro"/>
 
     <xacro:property name="length" value="0.60"/>
     <xacro:property name="width" value="0.75"/>
     <xacro:property name="height" value="0.90"/>
 
     <material name="blue_table">
-        <color rgba="0 0 0.8 0.5"/>
+        <color rgba="0 0 0.8 1"/>
     </material>
 
     <xacro:macro name="assembled_robot" params="
@@ -64,6 +65,18 @@
         >
             <origin xyz="0 0 ${height}" rpy="0 0 ${pi}"/>
         </xacro:ur_robot>
+
+        <!-- This will create gripper -->
+        <xacro:robotiq_gripper
+            name="RobotiqGripper"
+            prefix="${ur_type}_"
+            parent="${ur_type}_flange"
+        >
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+    </xacro:robotiq_gripper>
+
     </xacro:macro>
+
+    
 
 </robot>
