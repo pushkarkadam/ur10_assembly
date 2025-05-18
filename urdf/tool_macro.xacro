@@ -21,7 +21,8 @@
         <link name="${prefix}${name}">
             <visual>
                 <geometry>
-                    <cylinder radius="${radius}" length="${length}"/>
+                    <mesh filename="package://ur10_assembly/meshes/pointer.STL" scale="0.001 0.001 0.001"/>
+                    <!-- <cylinder radius="${radius}" length="${length}"/> -->
                 </geometry>
                 <material name="red"/>
                 <origin xyz="0 0 ${length/2}" rpy="0 0 0"/>
