@@ -6,7 +6,7 @@
         parent">
 
         <xacro:property name="radius" value="0.01"/>
-        <xacro:property name="length" value="0.1"/>
+        <xacro:property name="length" value="0.17"/>
 
         <material name="red">
             <color rgba="0.8 0 0 1"/>
